@@ -1,0 +1,256 @@
+<!-- 文章类别管理  查(即显示)增删改-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>文章列表</title>
+    <link rel="stylesheet" href="js/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/iconfont.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/bootstrap/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="common_title">
+            文章类别管理
+        </div>
+        <div class="container-fluid common_con">
+            <table class="table table-striped table-bordered table-hover mp20 category_table">
+                <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>Slug</th>
+                        <th class="text-center" width="100">操作</th>
+                    </tr>
+                </thead>
+                <tbody id="category_table">
+                    <!-- <tr>
+                        <td>未分类</td>
+                        <td>uncategorized</td>
+                        <td class="text-center">
+                            <a href="javascript:editTr({&quot;id&quot;:&quot;1&quot;,&quot;slug&quot;:&quot;uncategorized&quot;,&quot;name&quot;:&quot;未分类&quot;});"
+                                class="btn btn-info btn-xs">编辑</a>
+                            <a href="javascript:deleteTr( 1 );" class="btn btn-danger btn-xs">删除</a>
+                        </td>
+                    </tr> -->
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-center">
+                            <a href="#" class="btn btn-success" data-toggle="modal" data-target="#addModal">新增分类</a>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <!-- 添加文章分类所专用的模态框 -->
+    <div class="modal fade" id="addModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                    <h4 class="modal-title">新增分类</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="name" class="control-label">分类名称:</label>
+                            <input type="text" class="form-control" id="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="slug" class="control-label">分类别名:</label>
+                            <input type="text" class="form-control" id="slug">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" id="model_shutoff">关闭</button>
+                    <button type="button" class="btn btn-primary" id="model_add">新增</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 编辑文章分类所专用的模态框 -->
+    <div class="modal fade" id="editModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                    <h4 class="modal-title">编辑分类</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <!-- <label for="edit_id" class="control-label">分类编号:</label> -->
+                            <input type="hidden" class="form-control" id="edit_id">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_name" class="control-label">分类名称:</label>
+                            <input type="text" class="form-control" id="edit_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_slug" class="control-label">分类别名:</label>
+                            <input type="text" class="form-control" id="edit_slug">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" id="model_cancel">取消</button>
+                    <button type="button" class="btn btn-primary" id="model_save">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <!-- 前任留的代码 -->
+    <script>
+        // $('#addModal').modal({
+        //     show: false,
+        //     backdrop: false
+        // });
+
+        // $('#model_shutoff').click(function () {
+        //     alert('shutoff');
+        //     $('#addModal').modal('hide');
+        // });
+
+        // $('#model_add').click(function () {
+        //     alert('add');
+        //     $('#addModal').modal('hide');
+        // });
+
+        // $('.category_table').delegate('a', 'click', function () {
+        //     if ($(this).hasClass('btn-info')) {
+        //         $('#addModal .modal-title').html('修改分类名称');
+        //         $('#addModal').modal('show');
+        //     }
+        // })      
+    </script>
+    <!-- 放接口的js文件 -->
+    <script src="./js/utils/config.js"></script>
+    <!-- 与文章类别有关的js文件 -->
+    <script src="./js/utils/category.js"></script>
+    <!-- 模板引擎 -->
+    <script src="./js/template-web.js"></script>
+    <!-- 文章类别的自定义模板 -->
+    <script type="text/html" id="tmp_category">
+        {{each data item}}
+        <tr>
+            <td>{{item.name}}</td>
+            <td>{{item.slug}}</td>
+            <td class="text-center">
+                <a href="javascript:;" class="btn btn-info btn-xs edit" data-id="{{item.id}}" data-name="{{item.name}}" data-slug="{{item.slug}}">编辑</a>
+                <a href="javascript:;" class="btn btn-danger btn-xs del" data-id="{{item.id}}">删除</a>
+            </td>
+        </tr>
+        {{/each}}
+    </script>
+    <script>
+        //--------------------------------------------------------------获取文章列表并显示
+        function getAndShow() {
+            category.get().then(function (res) {
+                // console.log(res);
+                var htmlStr = template("tmp_category", res)
+                $("#category_table").html(htmlStr)
+            })
+        }
+        getAndShow();
+
+        //-------------------------------------------------------------按模态框的增加按钮----新增文章类别
+        $("#model_add").on("click", function () {
+            var name = $("#name").val().trim();
+            var slug = $("#slug").val().trim();
+            if (name.length === 0 || slug.length === 0) {
+                alert("类别名字或别名不能为空,请检查后重新输入");
+                return;
+            }
+            //发请求
+            category.add(name, slug).then(function (res) {
+                console.log(res);
+                if (res.code === 200) {
+                    $("#name").val("");//清空用户的输入
+                    $("#slug").val("");
+                    $("#addModal").modal("hide");//将模态框隐藏
+                    getAndShow();
+                }
+
+
+            })
+        })
+        //按模态框的关闭按钮----隐藏模态框
+        $("#model_shutoff").on("click", function () {
+            $("#addModal").modal("hide");//将模态框隐藏
+        })
+
+
+
+        //-------------------------------------------------------------删除文章列表(事件委托)
+        $("#category_table").on("click", ".del", function () {
+            var id = $(this).attr("data-id");
+            // console.log(id);
+
+            category.del(id).then(function (res) {
+                // console.log(res);
+                if (res.code === 200) {
+                    //代表删除成功,重新获取页面
+                    getAndShow();
+                } else {
+                    alert(res.msg)
+                }
+
+            })
+        })
+
+
+
+        //-------------------------------------------------------------编辑文章列表(事件委托)
+        //点击编辑按钮,显示模态框
+        $("#category_table").on("click", ".edit", function () {
+
+
+            $("#editModal").modal("show");
+            $("#edit_name").val($(this).attr("data-name"));
+            $("#edit_slug").val($(this).attr("data-slug"));
+            $("#edit_id").val($(this).attr("data-id"));
+        })
+        //点击模态框中的保存按钮,
+        $("#model_save").on("click", function () {
+            var new_name = $("#edit_name").val().trim()
+            var new_slug = $("#edit_slug").val().trim()
+            var id = $("#edit_id").val();
+            if (new_name.length === 0 || new_slug.length === 0) {
+                alert("不能为空,请检查后重新输入")
+                return;
+            }
+            //调接口
+            category.edit(id, new_name, new_slug).then(function () {
+
+                getAndShow();
+                $("#edit_name").val("")
+                $("#edit_slug").val("")
+                $("#editModal").modal("hide")
+            })
+
+        })
+        //点击模态框中的取消按钮隐藏模态框
+        $("#model_cancel").on("click", function () {
+            $("#editModal").modal("hide")
+        })
+    </script>
+</body>
+
+</html>

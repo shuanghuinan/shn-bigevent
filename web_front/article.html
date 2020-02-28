@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>大事件-文章</title>
+    <link rel="stylesheet" type="text/css" href="css/reset.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+
+
+    <!-- dayjs插件 -->
+    <script src="../js库/dayjs/dayjs.min.js"></script>
+    <!-- dayjs的中文语言包 -->
+    <script src="../js库/dayjs/zh_cn.js"></script>
+    <!-- 相对时间的js包 -->
+    <script src="../js库/dayjs/relative.min.js"></script>
+</head>
+
+<body>
+    <div class="header">
+        <a href="#" class="logo fl"><img src="images/logo.png" alt="logo"></a>
+        <div class="search_form fl">
+            <input type="text" class="search_txt" placeholder="黑洞照片">
+            <button class="search_btn"><i class="fa fa-search"></i></button>
+        </div>
+        <div class="link_info fr">
+            <a href="#"><i class="fa fa-angle-right"></i>&nbsp;&nbsp;网站地图</a><br>
+            <a href="#"><i class="fa fa-angle-right"></i>&nbsp;&nbsp;招聘信息</a>
+        </div>
+    </div>
+
+    <div class="menu_con">
+        <div class="menu">
+            <div class="menu_collapse fl">
+                <a href="javascript:;" class="level_one"><i class="fa fa-list-ul"></i>全部分类</a>
+                <ul class="level_two cate">
+                    <li class="up"></li>
+                    <!-- <li><a href="#">最 新</a></li>
+                    <li><a href="#">科 技</a></li>
+                    <li><a href="#">股 市</a></li>
+                    <li><a href="#">商 品</a></li>
+                    <li><a href="#">外 汇</a></li>
+                    <li><a href="#">公 司</a></li> -->
+                </ul>
+            </div>
+            <ul class="left_menu fl cate">
+                <!-- <li><a href="#">最 新</a></li>
+                <li><a href="#">科 技</a></li>
+                <li><a href="#">股 市</a></li>
+                <li><a href="#">商 品</a></li>
+                <li><a href="#">外 汇</a></li>
+                <li><a href="#">公 司</a></li> -->
+            </ul>
+            <ul class="right_menu fr">
+                <li><a href="#">科技专题</a></li>
+                <li><a href="#">财经专题</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main_con clearfix">
+        <div class="left_con setfr">
+            <div class="breadcrumb">
+                当前位置： <a href="index.html">首页</a> &gt; <a href="#">科技</a> &gt; 文章详情
+            </div>
+            <h3 class="article_title" id="title"></h3>
+            <div class="article_info"><span id="author"></span> 发布于 <span id="date"></span>&nbsp;&nbsp;&nbsp;分类:
+                <span id="type_name"></span>&nbsp;&nbsp;&nbsp;阅读: (<span id="read"></span>) &nbsp;&nbsp;&nbsp;评论: (
+                <span id="comment"></span> )
+            </div>
+            <div class="article_con" id="content">
+                <!-- 
+                <p>“上天入地”还不够？硅谷“钢铁侠”马斯克名下一家低调的公司最近又融了一大笔钱。</p>
+
+                <p>马斯克投资的一家小型且不为人熟知的脑机接口（brain-computer
+                    interface）公司Neuralink披露，该公司融到了3900万美元，虽然不及公司计划的融资额5100万美元，但也比上次的融资多了不少。</p>
+
+                <p>两年前该公司曾计划融资1亿美元，但只拿到了2700万美元的融资。</p>
+
+                <p>在Neuralink递交给美国证券交易委员会（SEC）的材料中，并没有披露融资是否来自传统的风险投资者或者来自该公司的员工。</p>
+
+                <p>2016年，Neuralink在美国加利福尼亚州以医学研究公司的名义成立，之后一直低调运行。</p> -->
+
+            </div>
+            <div class="article_links">
+                上一篇： <a href="" id="prev">世界第一台可以玩游戏的冰箱</a><br>
+                下一篇： <a href="" id="next">世界第一个可以玩游戏的马桶、世界上第一个可以玩游戏的茶杯</a>
+            </div>
+
+            <form action="" class="comment_form">
+                <div class="form_group">
+                    <label>用户名：</label>
+                    <input type="text" placeholder="请输入用户名" class="comment_name" id="user">
+                </div>
+                <div class="form_group">
+                    <label>评论内容：</label>
+                    <textarea placeholder="请发表您的评论" class="comment_input" id="comment_content"></textarea>
+                </div>
+                <div class="form_group">
+                    <input type="button" name="" value="评 论" class="comment_sub" id="btn_comment"></div>
+            </form>
+
+            <div class="comment_count">
+                <span id="comment_num"></span>条评论
+            </div>
+
+            <div class="comment_list_con" id="comment_list">
+                <div class="comment_detail_list">
+                    <!-- <div class="person_pic fl">乔</div>
+                    <div class="name_time fl"><b>虚竹</b><span>4小时前</span></div>
+                    <div class="comment_text fl">
+                        遏制茅台酒价格过快上涨，多渠道供给，就不一定要买，租茅台酒也可以的，租售同权。开发共有产权茅台酒，让老百姓喝得起茅台酒，饮者有其酒。
+                    </div> -->
+                </div>
+            </div>
+        </div>
+        <div class="right_con setfl">
+            <div class="common_wrap">
+                <h3><i class="fa fa-bar-chart"></i> 一周热门排行</h3>
+                <ul class="content_list" id="hot_list">
+                    <!-- <li><span class="first">1</span><a href="#">神奇的水滴摄影，泡泡中的世界泡泡中的世界</a></li>
+                    <li><span class="second">2</span><a href="#">神奇的水滴摄影，泡泡中的世界</a></li>
+                    <li><span class="third">3</span><a href="#">神奇的水滴摄影，泡泡中的世界</a></li>
+                    <li><span>4</span><a href="#">神奇的水滴摄影，泡泡中的世界</a></li>
+                    <li><span>5</span><a href="#">神奇的水滴摄影，泡泡中的世界</a></li>
+                    <li><span>6</span><a href="#">神奇的水滴摄影，泡泡中的世界</a></li>
+                    <li><span>7</span><a href="#">神奇的水滴摄影，泡泡中的世界</a></li> -->
+                </ul>
+            </div>
+            <div class="common_wrap">
+                <h3><i class="fa fa-commenting-o"></i> 最新评论</h3>
+                <ul class="content_list comment_list" id="comment_list">
+                    <li>
+                        <span>山</span>
+                        <b><em>山治</em> 9个月前(08-14)说:</b>
+                        <strong>挺会玩的</strong>
+                    </li>
+                    <li>
+                        <span>丽</span>
+                        <b><em>丽丽</em> 9个月前(08-14)说:9个月前(08-14)说:9个月前(08-14)说:</b>
+                        <strong>挺会玩的挺会玩的挺会玩的挺会玩的</strong>
+                    </li>
+                    <li>
+                        <span>R</span>
+                        <b><em>Rechael</em> 9个月前(08-14)说:</b>
+                        <strong>挺会玩的</strong>
+                    </li>
+                    <li>
+                        <span>J</span>
+                        <b><em>John</em> 9个月前(08-14)说:</b>
+                        <strong>挺会玩的</strong>
+                    </li>
+                    <li>
+                        <span>段</span>
+                        <b><em>段正淳</em> 9个月前(08-14)说:</b>
+                        <strong>挺会玩的</strong>
+                    </li>
+                    <li>
+                        <span>乔</span>
+                        <b><em>乔峰</em> 9个月前(08-14)说:</b>
+                        <strong>挺会玩的</strong>
+                    </li>
+                </ul>
+            </div>
+            <div class="common_wrap">
+                <h3><i class="fa fa-bullseye"></i> 焦点关注</h3>
+                <ul class="content_list guanzhu_list">
+                    <li><a href="#">神奇的水滴摄影，泡泡中的世界泡泡中的世界</a></li>
+                    <li><a href="#">神奇的水滴摄影，泡泡中的世界</a></li>
+                    <li><a href="#">神奇的水滴摄影，泡泡中的世界</a></li>
+                    <li><a href="#">神奇的水滴摄影，泡泡中的世界</a></li>
+                    <li><a href="#">神奇的水滴摄影，泡泡中的世界</a></li>
+                    <li><a href="#">神奇的水滴摄影，泡泡中的世界</a></li>
+                    <li><a href="#">神奇的水滴摄影，泡泡中的世界</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer clearfix">
+        <div class="foot_link">
+            <a href="#">关于我们</a>
+            <span>|</span>
+            <a href="#">联系我们</a>
+            <span>|</span>
+            <a href="#">招聘人才</a>
+            <span>|</span>
+            <a href="#">友情链接</a>
+        </div>
+        <p>CopyRight © 2019 深圳大事件信息技术股份有限公司 All Rights Reserved</p>
+        <p>电话：0755-****888 粤ICP备*******8号</p>
+    </div>
+
+
+
+
+
+
+
+
+
+    <!-- jquery文件 -->
+    <script src="./js/jquery-1.12.4.min.js"></script>
+    <!-- 与接口有关的js文件 -->
+    <script src="./js/util/config.js"></script>
+    <!-- 与文章类别有关的js文件 -->
+    <script src="./js/util/category.js"></script>
+    <!-- 与文章关的js文件 -->
+    <script src="./js/util/artical.js"></script>
+    <!-- 与评论有关的js文件 -->
+    <script src="./js/util/comment.js"></script>
+    <!-- 分页插件 -->
+    <script src="./js/jquery.twbsPagination.js"></script>
+    <!-- 模板引擎插件 -->
+    <script src="./js/template-web.js"></script>
+    <!-- 为文章分类所设置的模板 -->
+    <script id="tmp_cate" type="text/html">
+        {{each data item}}
+            <li><a href="list.html?id={{item.id}}">{{item.name}}</a></li>
+        {{/each}}
+    </script>
+    <!-- 为热门排行所设置的模板 -->
+    <script id="tmp_hot" type="text/html">
+    {{each data item index}}
+        {{if index==0}}
+        <li><span class="first">{{index+1}}</span><a href="article.html?id={{item.id}}">{{item.title}}</a></li>
+        {{else if index==1}}
+        <li><span class="second">{{index+1}}</span><a href="article.html?id={{item.id}}">{{item.title}}</a></li>
+        {{else if index==2}}
+        <li><span class="third">{{index+1}}</span><a href="article.html?id={{item.id}}">{{item.title}}</a></li>
+        {{else}}
+        <li><span>{{index+1}}</span><a href="article.html?id={{item.id}}">{{item.title}}</a></li>
+        {{/if}}
+    {{/each}}
+    </script>
+    <!-- 为评论列表所设置的模板 -->
+    <script id="tmp_comment" type="text/html">
+        {{each data item}}
+        <div class="comment_detail_list">
+            <div class="person_pic fl">{{item.name.substr(0,1)}}</div>
+            <div class="name_time fl"><b>{{item.name}}</b><span>{{item.relateTime}}</span></div>
+            <div class="comment_text fl">
+                {{item.content}}
+            </div>
+        </div>
+        {{/each}}
+    </script>
+
+
+
+    <script>
+
+
+        dayjs.locale('zh-cn');
+        dayjs.extend(dayjs_plugin_relativeTime);
+
+
+        //------------------菜单栏文章类别的改变
+        category.get().then(function (res) {
+            // console.log(res);
+            if (res.code === 200) {
+                var htmlStr = template("tmp_cate", res);
+                $(".cate").append(htmlStr)
+            }
+
+        })
+
+
+        // 获取文章的id值
+        var curId = window.location.search.substr(4);
+        console.log(curId);
+
+        // 文章详情的显示
+        artical.getDetail(curId).then(function (res) {
+            console.log(res);
+            if (res.code === 200) {
+                $("#title").html(res.data.title);
+                $("#author").html(res.data.anthor);
+                $("#date").html(res.data.date);
+                $("#type_name").html(res.data.type_name);
+                $("#read").html(res.data.read);
+                $("#comment").html(res.data.comment);
+                $("#content").html(res.data.content);
+                if (res.data.prev) {
+                    $("#prev").html(res.data.prev.title);
+                    $("#prev").attr("href", `article.html?id=${res.data.prev.id}`)
+                } else {
+                    $("#prev").text("无");
+                }
+                if (res.data.next) {
+                    $("#next").html(res.data.next.title)
+                    $("#next").attr("href", `article.html?id=${res.data.next.id}`)
+                } else {
+                    $("next").text("无");
+                }
+
+                // 热门排行
+                //显示文章排行
+                artical.getRank(res.data.type_id).then(function (res) {
+                    // console.log(res);
+                    if (res.code === 200) {
+                        var htmlStr = template("tmp_hot", res);
+                        $("#hot_list").html(htmlStr)
+                    } else {
+                        alert(res.msg)
+                    }
+                })
+            } else {
+                alert(res.msg)
+            }
+
+        })
+
+        //发表评论
+        $("#btn_comment").on("click", function () {
+            var user = $("#user").val();
+            var content = $("#comment_content").val();
+            comment.add(user, content, curId).then(function (res) {
+                // console.log(res);
+                if (res.code === 200) {
+                    //清空评论
+                    $("#user").val("");
+                    $("#comment_content").val("");
+                    //重新加载评论并显示
+                    getComment()
+
+
+                } else {
+                    alert(res.msg)
+                }
+
+            })
+
+        })
+
+
+        // 获取评论列表
+        getComment()
+        function getComment() {
+            comment.get(curId).then(function (res) {
+                console.log(res);
+                if (res.code === 200) {
+                    //将评论时间的时间戳替换为相对时间(为后台获取的 "代表数据的数组"手动的增加一个属性,用来表示相对时间,这样方便用模板引擎渲染)
+                    res.data.forEach(function (item) {
+                        item.relateTime = getRelateTime(item.dt);
+                    });
+                    //获取评论列表成功后,渲染到页面
+                    var htmlStr = template("tmp_comment", res);
+                    $("#comment_list").html(htmlStr);
+                    //改变页面上显示的总评论数 
+                    var num = res.data.length;
+                    $("#comment_num").text(num)
+
+                } else {
+                    alert(res.msg)
+                }
+
+            })
+        }
+
+
+
+
+        // 相对时间
+        getRelateTime = function (time) {
+            return dayjs(time).fromNow();
+        }
+
+    </script>
+</body>
+
+</html>

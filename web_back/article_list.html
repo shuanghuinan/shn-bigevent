@@ -1,0 +1,229 @@
+<!-- 文章列表管理  查 实现分页 筛选功能 删除功能 -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>文章列表</title>
+    <link rel="stylesheet" href="js/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/iconfont.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/jquery-1.12.4.min.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="common_title">
+            文章列表
+        </div>
+        <div class="container-fluid common_con">
+            <div class="row opt_btns">
+                <div class="col-xs-6">
+                    <form class="form-inline">
+                        <select id="selCategory" name="" class="form-control input-sm">
+
+                        </select>
+                        <select id="selStatus" name="" class="form-control input-sm">
+                            <option value="">所有状态</option>
+                            <option value="草稿">草稿</option>
+                            <option value="已发布">已发布</option>
+                        </select>
+                        <button type="button" id="btnSearch" class="btn btn-default btn-sm">筛选</button>
+                    </form>
+                </div>
+                <div class="col-xs-6">
+                    <a href="article_release.html" class="btn btn-success btn-sm pull-right" id="release_btn">发表文章</a>
+                </div>
+            </div>
+
+            <table class="table table-striped table-bordered table-hover mp20">
+                <thead>
+                    <tr>
+                        <th>标题</th>
+                        <th>作者</th>
+                        <th>分类</th>
+                        <th class="text-center">发表时间</th>
+                        <th class="text-center">状态</th>
+                        <th class="text-center" width="100">操作</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                    <!-- <tr>
+                        <td>王积千造统最头</td>
+                        <td>杰克</td>
+                        <td>奇趣事</td>
+                        <td class="text-center">2017-06-08 07:08:46</td>
+                        <td class="text-center">已发布</td>
+                        <td class="text-center">
+                            <a href="article_edit.html" class="btn btn-default btn-xs">编辑</a>
+                            <a href="javascript:deleteTr( 1005 );" class="btn btn-danger btn-xs">删除</a>
+                        </td>
+                    </tr> -->
+                </tbody>
+            </table>
+
+            <div class="row text-center">
+                <ul class="pagination pagination-sm" id="pagination">
+                    <!-- <li class="page-item first disabled"><a href="#" class="page-link">首页</a></li>
+                    <li class="page-item prev disabled"><a href="#" class="page-link">上一页</a></li>
+                    <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                    <li class="page-item"><a href="#" class="page-link">2</a></li>
+                    <li class="page-item"><a href="#" class="page-link">3</a></li>
+                    <li class="page-item"><a href="#" class="page-link">4</a></li>
+                    <li class="page-item"><a href="#" class="page-link">5</a></li>
+                    <li class="page-item"><a href="#" class="page-link">6</a></li>
+                    <li class="page-item"><a href="#" class="page-link">7</a></li>
+                    <li class="page-item next"><a href="#" class="page-link">下一页</a></li>
+                    <li class="page-item last"><a href="#" class="page-link">尾页</a></li> -->
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- 前任留下的代码 -->
+    <script>
+        // 设置左侧菜单
+        $('#release_btn').click(function () {
+            window.parent.setMenu(1, 1);
+        })
+    </script>
+
+
+    <!-- 放接口的js文件 -->
+    <script src="./js/utils/config.js"></script>
+    <!-- 与 文章类别 有关的js文件 -->
+    <script src="./js/utils/category.js"></script>
+    <!-- 与 文章 有关的js文件 -->
+    <script src="./js/utils/artical.js"></script>
+    <!-- 模板引擎 -->
+    <script src="./js/template-web.js"></script>
+    <!-- 分页插件 -->
+    <script src="../js库/jquery.twbsPagination.js"></script>
+    <!-- 为文章分类下拉列表所设置的模板引擎 -->
+    <script type="text.html" id="tmp_select">
+        <option value="">所有分类</option>
+        {{each data item}}
+        <option value="{{item.id}}">{{item.name}}</option>
+        {{/each}}
+
+    </script>
+    <!-- 为文章列表所设置的模板引擎 -->
+    <script type="text.html" id="tmp_artical">
+    {{each data item}}
+        <tr>
+            <td>{{item.title}}</td>
+            <td>{{item.author}}</td>
+            <td>{{item.type}}</td>
+            <td class="text-center">{{item.date}}</td>
+            <td class="text-center">{{item.status}}</td>
+            <td class="text-center">
+                <a href="article_edit.html?id={{item.id}}" class="btn btn-default btn-xs">编辑</a>
+                <a href="javascript:;" class="btn btn-danger btn-xs del" data-id="{{item.id}}">删除</a>
+            </td>
+        </tr>
+    {{/each}}
+    </script>
+
+
+
+
+    <script>
+        // --------------------------------------------------------------------获取文章分类信息,并显示在下拉列表中
+        category.get().then(function (res) {
+            // console.log(res);
+            htmlStr = template("tmp_select", res);
+            $("#selCategory").html(htmlStr)
+        })
+
+        // ---------------------------------------------------------------------获取文章列表,并显示
+        var curPage = 1;     // 设置一个全局变量,表示当前页面
+        var curType = "";    // 设置一个全局变量,表示当前文章的类型编号
+        var curStatus = "";  // 设置一个全局变量,表示当前文章的状态
+        var curTotalPage;    // 设置一个全局变量,表示当前文章的总行数
+        getAndShow();
+        function getAndShow() {
+            artical.get(curPage, curType, curStatus).then(function (res) {
+                // console.log(res);
+                var htmlStr = template("tmp_artical", res);
+                $("#tbody").html(htmlStr);
+                //-------------------------------------------------------------------实现分页的总页数总是不变功能
+                //若前后两次获取到的总页数不一样,则要先把分页插件摧毁掉,然后再重新设置当前总页数,才能保证总页数一直正常显示
+                if (curTotalPage != res.totalPage) {
+                    $("#pagination").twbsPagination("destroy");
+                    curTotalPage = res.totalPage;
+                }
+
+                //-------------------------------------------------------------------实现分页
+                $("#pagination").twbsPagination({
+                    totalPages: res.totalPage,
+                    visiblepages: 11,
+                    first: "第一页",
+                    last: "最后一页",
+                    prev: "上一页",
+                    next: "下一页",
+                    onPageClick: function (e, page) {
+                        // alert(page);
+                        curPage = page;  // 点击之后,当前页面数要变化
+                        getAndShow();    // 并且要对页面重新进行渲染
+                    },
+                    initiateStartPageClick: false,
+                })
+            })
+        }
+
+
+        // ---------------------------------------------------------------------筛选功能
+        $("#btnSearch").click(function () {
+            curPage = 1;
+            curType = $("#selCategory").val();  // 文章类型编号
+            curStatus = $("#selStatus").val();  // 文章状态
+            // console.log(curType, curStatus);
+            getAndShow();
+
+        })
+
+
+
+
+        // ---------------------------------------------------------------------删除功能(事件委托)
+        $("#tbody").on("click", ".del", function () {
+            var id = $(this).attr("data-id");
+            // console.log(id)
+
+            // if (window.confirm("你确定要删除吗") === true) {
+            //     artical.del(id).then(function (res) {
+            //         // console.log(res);
+            //         if (res.code === 200) {
+            //             getAndShow()
+            //         } else {
+            //             alert(res.msg)
+            //         }
+            //     })
+            // }
+
+            //以下这段代码所实现的功能,和上面注释掉的代码所实现的功能是一样的
+            //但是下面这样写,又会好点,因为!!!它可以让代码尽早的结束!!!
+            if (!window.confirm("你确定要删除吗")) {
+                return;
+            }
+            artical.del(id).then(function (res) {
+                // console.log(res);
+                if (res.code === 200) {
+                    getAndShow()
+                } else {
+                    alert(res.msg)
+                }
+            })
+
+
+        })
+
+    </script>
+</body>
+
+</html>

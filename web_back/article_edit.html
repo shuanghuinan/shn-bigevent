@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>文章列表</title>
+    <link rel="stylesheet" href="js/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/iconfont.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link type="text/css" rel="stylesheet" href="js/jedate/css/jedate.css">
+    <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/jedate/js/jedate.js"></script>
+    <script src="js/tinymce/js/tinymce/tinymce.min.js"></script>
+    <script src="js/tinymce/js/tinymce_setup.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="common_title">
+            文章编辑
+        </div>
+        <div class="container-fluid common_con">
+            <form class="form-horizontal article_form">
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">文章标题：</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="title" value="文章标题文字">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputPassword3" class="col-sm-2 control-label">文章封面：</label>
+                    <div class="col-sm-10">
+                        <img id="cover" src="images/pic06.jpg" class="article_cover">
+                        <input type="file" id="exampleInputFile">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">文章类别：</label>
+                    <div class="col-sm-4">
+                        <select id="type" class="form-control">
+                            <!-- <option>类别一</option>
+                            <option>类别二</option>
+                            <option>类别三</option>
+                            <option selected>类别四</option>
+                            <option>类别五</option> -->
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">发布时间：</label>
+                    <div class="col-sm-4">
+
+                        <div class="input-group">
+                            <input type="text" class="form-control" value="2019-05-17" id="dateinput">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button"
+                                    onclick="jeDate('#dateinput',{trigger:false,format: 'YYYY-MM-DD'})"><i
+                                        class="iconfont icon-icondate"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">文章内容：</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="rich_content" name="content" placeholder="文章内容"
+                            value="文章内容">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-success">修改</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 放接口的js文件 -->
+    <script src="./js/utils/config.js"></script>
+    <!-- 与 文章类别 有关的js文件 -->
+    <script src="./js/utils/category.js"></script>
+    <!-- 与 文章 有关的js文件 -->
+    <script src="./js/utils/artical.js"></script>
+    <!-- 模板引擎插件 -->
+    <script src="./js/template-web.js"></script>
+    <!-- 分页插件 -->
+    <script src="../js库/jquery.twbsPagination.js"></script>
+    <!-- 为文章类别所定义的模板引擎 -->
+    <script id="tmp_cate" type="text/html">
+        {{each data item}}
+        <option value="{{item.id}}">{{item.name}}</option>
+        {{/each}}
+    </script>
+
+    <script>
+        //------------------------------------------------------------------------------文章的编辑
+        //  前提 : 在页面跳转之前,为编辑按钮设置编号(即id)
+        //            如何设置呢?  将id值以查询字符串的方式加在目的地址的后面
+        //  思路 : 1.获取当前要编辑的文章的id
+        //         2.根据id去取回这篇文章的信息,并显示在页面上(即把数据填到表单中)
+        //         3.实现保存编辑
+
+
+
+
+
+        // var id = window.location.search
+        var id = window.location.search.substr(4)
+        // console.log(id);
+
+
+
+        // 实现保存编辑
+        $("#btn_save").on("click", function () {
+            var fd = new FormData(document.querySelector("#form"));
+            fd.append("id", id);
+            fd.set("content", tinymce.activeEditor.getContent());
+            artical.edit(fd).then(function (res) {
+                console.log(res);
+                if (res.code === 200) {
+                    alert("修改成功")
+                } else {
+                    alert(res.msg)
+                }
+
+            })
+        })
+
+
+        //取回文章信息,并显示在页面
+        function getAndShow(id) {
+            artical.getById(id).then(function (res) {
+                console.log(res);
+                if (res.code === 200) {
+                    $("#title").val(res.data.title);
+                    $("#cover").attr("src", res.data.cover);
+                    $("#dateinput").val(res.data.date);
+                    $("#type").val(res.data.type);
+
+                    window.setTimeout(function () {
+                        tinymce.activeEditor.setContent(res.data.content)
+                    }, 1000)
+
+                } else {
+                    alert(res.msg)
+                }
+
+            })
+        }
+
+
+        // 文章类别的显示
+        function getAndShow_cate() {
+            category.get().then(function (res) {
+                // console.log(res);
+                if (res.code === 200) {
+                    var htmlStr = template('tmp_cate', res)
+                    $("#type").html(htmlStr)
+                    getAndShow(id);
+                } else {
+                    alert(res.msg)
+                }
+
+            })
+        }
+
+        getAndShow_cate()
+
+
+    </script>
+</body>
+
+</html>
